@@ -4,6 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { RoadmapTask } from '@/types/database'
+
+export const dynamic = 'force-dynamic'
 
 export default async function DashboardPage() {
     const supabase = createClient()
@@ -26,8 +29,8 @@ export default async function DashboardPage() {
         redirect('/onboarding')
     }
 
-    const tasks = roadmap.roadmap_tasks || []
-    const completedTasks = tasks.filter((t: any) => t.status === 'completed').length
+    const tasks = (roadmap?.roadmap_tasks as RoadmapTask[]) || []
+    const completedTasks = tasks.filter((t) => t.status === 'completed').length
     const progress = tasks.length > 0 ? (completedTasks / tasks.length) * 100 : 0
 
     return (
@@ -54,7 +57,7 @@ export default async function DashboardPage() {
                         <Card className="bg-zinc-900/50 border-zinc-800">
                             <ScrollArea className="h-[600px] p-6">
                                 <div className="space-y-6">
-                                    {tasks.map((task: any) => (
+                                    {tasks.map((task) => (
                                         <div key={task.id} className="flex gap-4 group">
                                             <div className="pt-1">
                                                 <Checkbox checked={task.status === 'completed'} />
@@ -87,7 +90,7 @@ export default async function DashboardPage() {
                             </CardHeader>
                             <CardContent>
                                 <p className="text-sm leading-relaxed text-zinc-300 italic">
-                                    "Focus on the fundamentals of {roadmap.title.split(' ')[0]}. Mastery is built on a solid foundation. You've got this!"
+                                    &quot;Focus on the fundamentals of {roadmap.title.split(' ')[0]}. Mastery is built on a solid foundation. You&apos;ve got this!&quot;
                                 </p>
                             </CardContent>
                         </Card>

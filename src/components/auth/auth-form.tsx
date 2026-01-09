@@ -44,11 +44,11 @@ export function AuthForm({ type }: { type: 'login' | 'signup' }) {
                     description: "Check your email for the confirmation link.",
                 })
             }
-        } catch (error: any) {
+        } catch (error: Error | any) {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description: error.message,
+                description: error instanceof Error ? error.message : String(error),
             })
         } finally {
             setLoading(false)

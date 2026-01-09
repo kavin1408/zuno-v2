@@ -15,7 +15,7 @@ export function createClient() {
                 set(name: string, value: string, options: CookieOptions) {
                     try {
                         cookieStore.set({ name, value, ...options })
-                    } catch (error) {
+                    } catch {
                         // The `set` method was called from a Server Component.
                         // This can be ignored if you have middleware refreshing
                         // user sessions.
@@ -24,7 +24,7 @@ export function createClient() {
                 remove(name: string, options: CookieOptions) {
                     try {
                         cookieStore.set({ name, value: '', ...options })
-                    } catch (error) {
+                    } catch {
                         // The `remove` method was called from a Server Component.
                         // This can be ignored if you have middleware refreshing
                         // user sessions.
@@ -40,7 +40,11 @@ export function createServiceRoleClient() {
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.SUPABASE_SERVICE_ROLE_KEY!,
         {
-            cookies: {}, // No cookies needed for service role key
+            cookies: {
+                get() { return undefined },
+                set() { },
+                remove() { },
+            },
         }
     )
 }

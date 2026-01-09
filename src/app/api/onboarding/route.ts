@@ -28,7 +28,7 @@ export async function POST(req: Request) {
             .eq('id', user.id)
     }
 
-    const responses = []
+    const responses: { subject: string; detected_level: string; message: string }[] = []
 
     for (const subject of subjects) {
         // 1. Detect level (simplified for now, usually we'd call AI)
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
                 const data = JSON.parse(aiResponse)
                 detected_level = data.level || detected_level
                 message = data.message || message
-            } catch (e) { }
+            } catch { }
         }
 
         // 2. Save Goal
@@ -96,12 +96,12 @@ export async function POST(req: Request) {
                 const tasksToInsert = []
                 let order = 0
                 for (const phase of roadmapData.phases || []) {
-                    for (const module of phase.modules || []) {
-                        for (const task of module.tasks || []) {
+                    for (const mod of phase.modules || []) {
+                        for (const task of mod.tasks || []) {
                             tasksToInsert.push({
                                 roadmap_id: roadmap.id,
                                 phase: phase.name,
-                                module: module.name,
+                                module: mod.name,
                                 title: task.title,
                                 description: task.description,
                                 estimated_time_minutes: task.estimated_time,

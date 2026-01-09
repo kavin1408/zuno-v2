@@ -10,7 +10,7 @@ export class AIClient {
         if (model) this.defaultModel = model;
     }
 
-    async call(messages: any[], model?: AIModel) {
+    async call(messages: unknown[], model?: AIModel) {
         if (!this.apiKey) {
             console.warn("AI Service: API Key is missing.");
             return null;

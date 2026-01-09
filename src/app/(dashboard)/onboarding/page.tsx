@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
 import { ChevronLeft, ChevronRight, Loader2, Sparkles } from 'lucide-react'
 
@@ -47,11 +46,11 @@ export default function OnboardingPage() {
 
             if (!res.ok) throw new Error('Failed to save goals')
             router.push('/dashboard')
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast({
                 variant: 'destructive',
                 title: 'Onboarding Error',
-                description: error.message
+                description: error instanceof Error ? error.message : 'An unknown error occurred'
             })
         } finally {
             setLoading(false)
