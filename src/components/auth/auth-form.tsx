@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
-import { toast } from 'sonner' // I'll need to install sonner or use my toaster
+import { useToast } from '@/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 
 export function AuthForm({ type }: { type: 'login' | 'signup' }) {
@@ -16,6 +16,7 @@ export function AuthForm({ type }: { type: 'login' | 'signup' }) {
     const [loading, setLoading] = useState(false)
     const supabase = createClient()
     const router = useRouter()
+    const { toast } = useToast()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -38,10 +39,17 @@ export function AuthForm({ type }: { type: 'login' | 'signup' }) {
                     },
                 })
                 if (error) throw error
-                alert('Check your email for the confirmation link!')
+                toast({
+                    title: "Account Created",
+                    description: "Check your email for the confirmation link.",
+                })
             }
         } catch (error: any) {
-            alert(error.message)
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: error.message,
+            })
         } finally {
             setLoading(false)
         }

@@ -7,8 +7,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Progress } from '@/components/ui/progress' // Need to install progress
-import { ChevronLeft, ChevronRight, Loader2, Target, BookOpen, Clock, Sparkles } from 'lucide-react'
+import { Progress } from '@/components/ui/progress'
+import { useToast } from '@/hooks/use-toast'
+import { ChevronLeft, ChevronRight, Loader2, Sparkles } from 'lucide-react'
 
 export default function OnboardingPage() {
     const [step, setStep] = useState(1)
@@ -22,6 +23,7 @@ export default function OnboardingPage() {
         style: 'balanced'
     })
     const router = useRouter()
+    const { toast } = useToast()
 
     const handleNext = () => setStep(s => s + 1)
     const handleBack = () => setStep(s => s - 1)
@@ -46,7 +48,11 @@ export default function OnboardingPage() {
             if (!res.ok) throw new Error('Failed to save goals')
             router.push('/dashboard')
         } catch (error: any) {
-            alert(error.message)
+            toast({
+                variant: 'destructive',
+                title: 'Onboarding Error',
+                description: error.message
+            })
         } finally {
             setLoading(false)
         }
